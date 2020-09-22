@@ -4,7 +4,7 @@ namespace LaXiS.VantagePointTree
 {
     public class TreeItemComparer<T> : Comparer<T> where T : ITreeItem<T>
     {
-        private T _baseItem;
+        private readonly T _baseItem;
 
         public TreeItemComparer(T baseItem)
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
-using LaXiS.VantagePointTree;
 
 namespace LaXiS.VantagePointTree.Tests
 {
@@ -18,28 +17,29 @@ namespace LaXiS.VantagePointTree.Tests
         [Fact]
         public void Test1()
         {
-            var items = new List<Point>();
-
-            items.Add(new Point("Point0", 9));
-            items.Add(new Point("Point1", 48));
-            items.Add(new Point("Point2", 52));
-            items.Add(new Point("Point3", 75));
-            items.Add(new Point("Point4", 77));
-            items.Add(new Point("Point5", 35));
-            items.Add(new Point("Point6", 36));
-            items.Add(new Point("Point7", 61));
-            items.Add(new Point("Point8", 17));
-            items.Add(new Point("Point9", 57));
-            items.Add(new Point("Point10", 87));
-            items.Add(new Point("Point11", 8));
-            items.Add(new Point("Point12", 90));
-            items.Add(new Point("Point13", 45));
-            items.Add(new Point("Point14", 88));
-            items.Add(new Point("Point15", 64));
-            items.Add(new Point("Point16", 37));
-            items.Add(new Point("Point17", 12));
-            items.Add(new Point("Point18", 78));
-            items.Add(new Point("Point19", 51));
+            var items = new List<Point>
+            {
+                new Point("Point0", 9),
+                new Point("Point1", 48),
+                new Point("Point2", 52),
+                new Point("Point3", 75),
+                new Point("Point4", 77),
+                new Point("Point5", 35),
+                new Point("Point6", 36),
+                new Point("Point7", 61),
+                new Point("Point8", 17),
+                new Point("Point9", 57),
+                new Point("Point10", 87),
+                new Point("Point11", 8),
+                new Point("Point12", 90),
+                new Point("Point13", 45),
+                new Point("Point14", 88),
+                new Point("Point15", 64),
+                new Point("Point16", 37),
+                new Point("Point17", 12),
+                new Point("Point18", 78),
+                new Point("Point19", 51)
+            };
 
             var vpTree = new VantagePointTree<Point>(items);
 

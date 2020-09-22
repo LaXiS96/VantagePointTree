@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using LaXiS.VantagePointTree;
 
 namespace LaXiS.VantagePointTree.Examples
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var random = new Random();
 

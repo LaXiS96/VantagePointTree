@@ -1,18 +1,18 @@
 # VantagePointTree
 
-C# implementation of a vantage-point tree
+C# implementation of a vantage-point tree, a data structure which is well suited to similarity searching.
 
 ## Details
 
-This implementation is mostly instructional, as can be seen by all the explanatory comments spread around the code. I do not guarantee its correctness.
+This implementation is mostly educational, as can be seen by all the explanatory comments spread around the code. No guarantees are given.
 
 The solution includes:
 
-- .NET Standard 2.0 class library implementation (`VantagePointTree`)
+- .NET Standard 2.1 class library implementation (`VantagePointTree`)
 - xUnit.net testing project (`VantagePointTree.Tests`)
-- .NET Core 2.2 example program (`VantagePointTree.Examples`)
+- .NET Core 3.1 example program (`VantagePointTree.Examples`)
 
-The VantagePointTree class is generic and can accept any item type that implements `ITreeItem<T>` (for the `DistanceFrom` distance calculation method).
+The VantagePointTree class is generic and can accept any `T` that implements `ITreeItem<T>` (for the `DistanceFrom` distance calculation method).
 
 ## Features
 

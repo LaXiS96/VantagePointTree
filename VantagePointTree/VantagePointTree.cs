@@ -5,8 +5,8 @@ namespace LaXiS.VantagePointTree
 {
     public class VantagePointTree<T> where T : ITreeItem<T>
     {
+        private readonly Random _random;
         private TreeNode<T> _rootNode;
-        private Random _random;
 
         public VantagePointTree()
         {
@@ -21,11 +21,11 @@ namespace LaXiS.VantagePointTree
         public void Build(List<T> items)
         {
             // Build on a shallow copy of the list, so we do not modify the original list
-            _rootNode = _buildRecursive(items.GetRange(0, items.Count));
+            _rootNode = BuildRecursive(items.GetRange(0, items.Count));
             // _rootNode.Dump();
         }
 
-        private TreeNode<T> _buildRecursive(List<T> items)
+        private TreeNode<T> BuildRecursive(List<T> items)
         {
             if (items.Count == 0)
                 return null;
@@ -56,8 +56,8 @@ namespace LaXiS.VantagePointTree
 
                 // Recursively build left and right subtrees, splitting the list in half at the median item
                 // Children end up 50/50 on either subtree (this also keeps the tree balanced)
-                node.LeftNode = _buildRecursive(items.GetRange(0, medianIndex + 1));
-                node.RightNode = _buildRecursive(items.GetRange(medianIndex + 1, items.Count - medianIndex - 1));
+                node.LeftNode = BuildRecursive(items.GetRange(0, medianIndex + 1));
+                node.RightNode = BuildRecursive(items.GetRange(medianIndex + 1, items.Count - medianIndex - 1));
             }
 
             return node;
@@ -69,12 +69,12 @@ namespace LaXiS.VantagePointTree
             var results = new List<TreeSearchResult<T>>();
             double tau = double.MaxValue;
 
-            _searchRecursive(target, k, _rootNode, ref tau, results);
+            SearchRecursive(target, k, _rootNode, ref tau, results);
 
             return results;
         }
 
-        private void _searchRecursive(T target, int k, TreeNode<T> node, ref double tau, List<TreeSearchResult<T>> results)
+        private void SearchRecursive(T target, int k, TreeNode<T> node, ref double tau, List<TreeSearchResult<T>> results)
         {
             // k = number of nearest neighbors to search for
             // tau = longest distance in current results, must be initialized to double.MaxValue and passed as a reference
@@ -101,7 +101,7 @@ namespace LaXiS.VantagePointTree
                 {
                     // Sort results by ascending distance and update longest distance in results (tau)
                     results.Sort((a, b) => Comparer<double>.Default.Compare(a.Distance, b.Distance));
-                    tau = results[results.Count - 1].Distance;
+                    tau = results[^1].Distance;
                 }
             }
 
@@ -114,18 +114,18 @@ namespace LaXiS.VantagePointTree
                 // If target is within radius, build left (inside) subtree first if there are results within radius,
                 // then build right (outside) subtree if there are results outside radius
                 if (distance - tau < node.Radius)
-                    _searchRecursive(target, k, node.LeftNode, ref tau, results);
+                    SearchRecursive(target, k, node.LeftNode, ref tau, results);
                 if (distance + tau >= node.Radius)
-                    _searchRecursive(target, k, node.RightNode, ref tau, results);
+                    SearchRecursive(target, k, node.RightNode, ref tau, results);
             }
             else
             {
                 // If target is outside radius, build right (outside) subtree first if there are results outside radius,
                 // then build left (inside) subtree if there are results within radius
                 if (distance + tau >= node.Radius)
-                    _searchRecursive(target, k, node.RightNode, ref tau, results);
+                    SearchRecursive(target, k, node.RightNode, ref tau, results);
                 if (distance - tau < node.Radius)
-                    _searchRecursive(target, k, node.LeftNode, ref tau, results);
+                    SearchRecursive(target, k, node.LeftNode, ref tau, results);
             }
         }
     }
