@@ -3,17 +3,25 @@ using System.Collections.Generic;
 
 namespace LaXiS.VantagePointTree
 {
-    public class VantagePointTree<T> where T : ITreeItem<T>
+    public delegate double DistanceFunction<T>(T a, T b);
+
+    public class VantagePointTree<T>
     {
         private readonly Random _random;
+        private readonly DistanceFunction<T> _distanceFunction;
         private TreeNode<T> _rootNode;
 
-        public VantagePointTree()
+        public VantagePointTree(
+            DistanceFunction<T> distanceFunction)
         {
             _random = new Random();
+            _distanceFunction = distanceFunction;
         }
 
-        public VantagePointTree(List<T> items) : this()
+        public VantagePointTree(
+            DistanceFunction<T> distanceFunction,
+            List<T> items)
+            : this(distanceFunction)
         {
             Build(items);
         }
@@ -38,7 +46,7 @@ namespace LaXiS.VantagePointTree
             }
             else
             {
-                // Swap the first element with a random other element
+                // Choose a random Vantage Point (swap first element with a random other element)
                 int randomIndex = _random.Next(1, items.Count);
                 items.Swap(0, randomIndex);
 
@@ -49,13 +57,14 @@ namespace LaXiS.VantagePointTree
                 // TODO optimizable (see selection algorithm)
                 // Sort this item's children by their distance from it and take the item in the middle:
                 // the current item's radius is its distance from this median child
-                items.Sort(new TreeItemComparer<T>(node.Item));
+                items.Sort(new TreeItemComparer<T>(node.Item, _distanceFunction));
                 int medianIndex = items.Count / 2 - 1;
                 if (medianIndex < 0) medianIndex = 0;
-                node.Radius = node.Item.DistanceFrom(items[medianIndex]);
+                node.Radius = _distanceFunction(node.Item, items[medianIndex]);
 
                 // Recursively build left and right subtrees, splitting the list in half at the median item
-                // Children end up 50/50 on either subtree (this also keeps the tree balanced)
+                // to keep the tree balanced.
+                // The median point is part of the inside subtree
                 node.LeftNode = BuildRecursive(items.GetRange(0, medianIndex + 1));
                 node.RightNode = BuildRecursive(items.GetRange(medianIndex + 1, items.Count - medianIndex - 1));
             }
@@ -63,7 +72,9 @@ namespace LaXiS.VantagePointTree
             return node;
         }
 
-        // Search tree for k nearest neighbors to target
+        /// <summary>
+        /// Search tree for k nearest neighbors to target
+        /// </summary>
         public List<TreeSearchResult<T>> Search(T target, int k)
         {
             var results = new List<TreeSearchResult<T>>();
@@ -83,11 +94,12 @@ namespace LaXiS.VantagePointTree
                 return;
 
             // Calculate target's distance from the current examined node
-            double distance = target.DistanceFrom(node.Item);
+            double distance = _distanceFunction(target, node.Item);
+            //Console.WriteLine("VPItem={{{0}}} VPRadius={1} Distance={2} Tau={3} Results={4}", node.Item, node.Radius, distance, tau, results.Count);
 
-            // If distance to current node is shorter than longest distance currently in results
-            // (this is always true for the first k passes, since tau only gets updated once we find
-            // all k supposed nearest neighbors)
+            // Add result if distance to current node is shorter than longest distance currently in results.
+            // Tau is updated only once we have at least k results, otherwise we risk returning too early
+            // (consider the case when the first vantage point is very close to the target)
             if (distance < tau)
             {
                 // Remove result with longest distance if results is full
@@ -105,27 +117,35 @@ namespace LaXiS.VantagePointTree
                 }
             }
 
-            // Note: by searching the appropriate subtree first (left if target is inside, right if target is outside)
-            // we cut the searched nodes to a minimum, since there is a higher probability for neighbors to be
-            // on the same side of the radius than on the other. Also, tau shrinks every time we find a closer node,
-            // therefore we can skip searching an entire subtree if all found results are on the same side
+            // Note: by searching the appropriate subtree first, we cut the searched nodes to a minimum since
+            // there is a higher probability for neighbors to be on the same side of the radius than on the other.
+            // Also, tau shrinks every time we find a closer node, therefore we can skip searching an entire subtree
+            // if all found results are on the same side
             if (distance < node.Radius)
             {
-                // If target is within radius, build left (inside) subtree first if there are results within radius,
-                // then build right (outside) subtree if there are results outside radius
-                if (distance - tau < node.Radius)
-                    SearchRecursive(target, k, node.LeftNode, ref tau, results);
-                if (distance + tau >= node.Radius)
+                // Always search left (inside) subtree if target is within radius
+                //Console.WriteLine("Searching INSIDE INSIDE");
+                SearchRecursive(target, k, node.LeftNode, ref tau, results);
+
+                // Search right (outside) subtree only if there are results outside radius
+                if (distance + tau > node.Radius)
+                {
+                    //Console.WriteLine("Searching INSIDE OUTSIDE");
                     SearchRecursive(target, k, node.RightNode, ref tau, results);
+                }
             }
             else
             {
-                // If target is outside radius, build right (outside) subtree first if there are results outside radius,
-                // then build left (inside) subtree if there are results within radius
-                if (distance + tau >= node.Radius)
-                    SearchRecursive(target, k, node.RightNode, ref tau, results);
-                if (distance - tau < node.Radius)
+                // Always search right (outside) subtree if target is outside radius
+                //Console.WriteLine("Searching OUTSIDE OUTSIDE");
+                SearchRecursive(target, k, node.RightNode, ref tau, results);
+
+                // then search left (inside) subtree if there are results within radius
+                if (distance - tau <= node.Radius)
+                {
+                    //Console.WriteLine("Searching OUTSIDE INSIDE");
                     SearchRecursive(target, k, node.LeftNode, ref tau, results);
+                }
             }
         }
     }

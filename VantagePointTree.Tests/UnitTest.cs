@@ -41,7 +41,7 @@ namespace LaXiS.VantagePointTree.Tests
                 new Point("Point19", 51)
             };
 
-            var vpTree = new VantagePointTree<Point>(items);
+            var vpTree = new VantagePointTree<Point>(Point.DistanceFunction, items);
 
             var targetPoint = new Point("PointSearch", 54);
             _output.WriteLine($"Search: {targetPoint}");
@@ -59,7 +59,7 @@ namespace LaXiS.VantagePointTree.Tests
         }
     }
 
-    public class Point : ITreeItem<Point>
+    public class Point
     {
         public string Key;
         public int Value;
@@ -70,9 +70,9 @@ namespace LaXiS.VantagePointTree.Tests
             Value = value;
         }
 
-        public double DistanceFrom(Point p)
+        public static double DistanceFunction(Point a, Point b)
         {
-            return Math.Abs(Value - p.Value);
+            return Math.Abs(a.Value - b.Value);
         }
 
         public override string ToString()

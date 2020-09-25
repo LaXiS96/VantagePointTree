@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VantagePointTree", "VantagePointTree\VantagePointTree.csproj", "{940F34B0-5BAE-4785-AE73-9DAA8580E812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VantagePointTree", "VantagePointTree\VantagePointTree.csproj", "{940F34B0-5BAE-4785-AE73-9DAA8580E812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VantagePointTree.Tests", "VantagePointTree.Tests\VantagePointTree.Tests.csproj", "{9DD94C7F-D185-4A3C-AE44-9E5BF903F31B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VantagePointTree.Tests", "VantagePointTree.Tests\VantagePointTree.Tests.csproj", "{9DD94C7F-D185-4A3C-AE44-9E5BF903F31B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VantagePointTree.Examples", "VantagePointTree.Examples\VantagePointTree.Examples.csproj", "{F127A94A-430F-43CE-B3D8-C1D0E71475B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VantagePointTree.Examples", "VantagePointTree.Examples\VantagePointTree.Examples.csproj", "{F127A94A-430F-43CE-B3D8-C1D0E71475B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23B28C91-5F79-45AC-8F36-26AE4500373E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{940F34B0-5BAE-4785-AE73-9DAA8580E812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -58,5 +60,11 @@ Global
 		{F127A94A-430F-43CE-B3D8-C1D0E71475B8}.Release|x64.Build.0 = Release|Any CPU
 		{F127A94A-430F-43CE-B3D8-C1D0E71475B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{F127A94A-430F-43CE-B3D8-C1D0E71475B8}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B183323F-D4C7-47F3-A84D-2D81A85D5966}
 	EndGlobalSection
 EndGlobal

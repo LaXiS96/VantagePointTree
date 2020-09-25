@@ -1,6 +1,6 @@
 # VantagePointTree
 
-C# implementation of a vantage-point tree, a data structure which is well suited to similarity searching.
+C# implementation of a vantage-point tree, a binary tree data structure for fast nearest-neighbor search in metric spaces (sets where the metric is the distance between points).
 
 ## Details
 
@@ -12,7 +12,7 @@ The solution includes:
 - xUnit.net testing project (`VantagePointTree.Tests`)
 - .NET Core 3.1 example program (`VantagePointTree.Examples`)
 
-The VantagePointTree class is generic and can accept any `T` that implements `ITreeItem<T>` (for the `DistanceFrom` distance calculation method).
+The VantagePointTree<T> class expects a DistanceFunction<T> delegate which calculates the distance between two `T` points.
 
 ## Features
 
@@ -30,6 +30,8 @@ The VantagePointTree class is generic and can accept any `T` that implements `IT
 ## References and inspirations
 
 - https://en.wikipedia.org/wiki/Vantage-point_tree
+- https://en.wikipedia.org/wiki/Metric_tree
+- https://en.wikipedia.org/wiki/Metric_space
 - http://stevehanov.ca/blog/?id=130
 - https://fribbels.github.io/vptree/writeup
 - https://github.com/mcraiha/CSharp-vptree
