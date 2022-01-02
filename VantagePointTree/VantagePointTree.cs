@@ -113,7 +113,7 @@ namespace LaXiS.VantagePointTree
                 {
                     // Sort results by ascending distance and update longest distance in results (tau)
                     results.Sort((a, b) => Comparer<double>.Default.Compare(a.Distance, b.Distance));
-                    tau = results[^1].Distance;
+                    tau = results[results.Count - 1].Distance;
                 }
             }
 

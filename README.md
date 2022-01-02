@@ -8,7 +8,7 @@ This implementation is mostly educational, as can be seen by all the explanatory
 
 The solution includes:
 
-- .NET Standard 2.1 class library implementation (`VantagePointTree`)
+- .NET Standard 2.0 class library implementation (`VantagePointTree`)
 - xUnit.net testing project (`VantagePointTree.Tests`)
 - .NET Core 3.1 example program (`VantagePointTree.Examples`)
 
